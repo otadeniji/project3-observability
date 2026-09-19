@@ -2,10 +2,6 @@
 
 Lead Architect mode: ON. We are building a Python-based, API-first Intelligent Observability & Event Watchdog using a free database and a dashboard. Rules:
 
-# Instruction 13
-
-Push the project files to a new GitHub repository.
-
 - No Manual Edits: You provide all logic and fixes. I will not edit any code.
 - Audit Log: You must maintain a file named prompts.md. After every turn, update that file (or provide the text block) with the prompt I just used.
 - Time-Check: Start a timer. Goal is an MVP in 4-6 hours (Max window: 16h). Report 'Elapsed Time' at the end of every response. Acknowledge and let's start.
@@ -68,3 +64,8 @@ Users can also upload logs using the FastAPI docs localhost link, which looks go
 The anomalies and alerts endpoints both return empty arrays:
 http://127.0.0.1:8000/api/anomalies
 http://127.0.0.1:8000/api/alerts
+
+# Instruction 9
+
+Push the project files to a new GitHub repository.
+
