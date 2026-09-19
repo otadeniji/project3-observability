@@ -1,0 +1,41 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$pyenv
+
+# Virtual Environment
+venv/
+ENV/
+env/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# macOS
+.DS_Store
+.AppleDouble
+
+# Logs (keep sample_logs but not generated logs)
+*.log
+logs/*.log
+!sample_logs/*
+
+# Environment variables
+.env
+.env.local
+
+# Database files (optional - SQLite DB can be committed or excluded)
+observability.db
+*.db
+
+# Streamlit cache
+.streamlit/
+__pycache__/streamlit*
+
+# Temporary files
+*.tmp
+*.temp

@@ -1,0 +1,13 @@
+[2026-09-18 16:45:01] INFO: Application started successfully
+[2026-09-18 16:45:15] INFO: User login successful for user_id=1234
+[2026-09-18 16:45:30] DEBUG: Processing request /api/users
+[2026-09-18 16:45:45] INFO: Request completed in 150ms
+[2026-09-18 16:46:00] INFO: User login successful for user_id=1235
+[2026-09-18 16:46:15] ERROR: Database connection timeout
+[2026-09-18 16:46:30] ERROR: Retry failed - database still unreachable
+[2026-09-18 16:46:45] ERROR: Service degraded mode activated
+[2026-09-18 16:47:00] INFO: Database connection restored
+[2026-09-18 16:47:15] INFO: Normal operation resumed
+[2026-09-18 16:47:30] WARNING: High memory usage detected - 85%
+[2026-09-18 16:47:45] INFO: Garbage collection triggered
+[2026-09-18 16:48:00] INFO: Memory usage normalized to 45%

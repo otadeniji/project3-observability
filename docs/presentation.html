@@ -1,0 +1,118 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Intelligent Observability &amp; Event Watchdog</title>
+  <style>
+    :root { --ink: #16202a; --muted: #61707d; --accent: #0f8b8d; --warm: #f4b942; --paper: #f5f7f4; }
+    * { box-sizing: border-box; }
+    body { margin: 0; background: #202a32; color: var(--ink); font-family: Georgia, 'Times New Roman', serif; }
+    .deck { height: 100vh; overflow: hidden; }
+    .slide { display: none; height: 100vh; padding: 6vh 8vw; background: var(--paper); position: relative; overflow: auto; }
+    .slide.active { display: block; }
+    .slide::after { content: attr(data-number); position: absolute; right: 4vw; bottom: 3vh; color: var(--muted); font: 700 14px Arial, sans-serif; }
+    .kicker { color: var(--accent); text-transform: uppercase; letter-spacing: .16em; font: 700 13px Arial, sans-serif; }
+    h1 { max-width: 850px; margin: 16vh 0 20px; font-size: clamp(44px, 7vw, 96px); line-height: .94; }
+    h2 { max-width: 900px; margin: 12px 0 24px; font-size: clamp(34px, 5vw, 68px); line-height: .98; }
+    h3 { font-size: 28px; margin: 0 0 14px; }
+    p, li { max-width: 760px; font-size: clamp(19px, 2vw, 29px); line-height: 1.35; }
+    ul, ol { padding-left: 1.15em; }
+    li { margin: 12px 0; }
+    .subtitle { color: var(--muted); max-width: 700px; }
+    .accent-line { height: 8px; width: 120px; background: var(--warm); margin: 28px 0; }
+    .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 36px; align-items: start; }
+    .panel { background: white; border-left: 7px solid var(--accent); padding: 24px 30px; box-shadow: 0 12px 30px #16202a18; }
+    .metric-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; margin: 28px 0; }
+    .metric { background: #16202a; color: white; padding: 18px; }
+    .metric strong { display: block; color: var(--warm); font: 700 42px Arial, sans-serif; }
+    .metric span { font: 700 14px Arial, sans-serif; text-transform: uppercase; letter-spacing: .08em; }
+    .live { width: 100%; height: 58vh; border: 0; background: white; box-shadow: 0 12px 30px #16202a24; }
+    .live.small { height: 32vh; }
+    .caption { color: var(--muted); font: 14px Arial, sans-serif; margin-top: 10px; }
+    code { background: #e5ece9; padding: 3px 7px; font-family: Consolas, monospace; font-size: .78em; }
+    .formula { background: #16202a; color: white; padding: 22px 28px; font: 700 25px Consolas, monospace; display: inline-block; }
+    .controls { position: fixed; z-index: 3; right: 24px; bottom: 18px; display: flex; gap: 8px; }
+    button { border: 0; background: var(--accent); color: white; padding: 11px 16px; cursor: pointer; font-weight: 700; }
+    button:hover { background: #096466; }
+    @media (max-width: 800px) { .grid, .metric-row { grid-template-columns: 1fr; } .slide { padding: 5vh 7vw; } .live { height: 48vh; } }
+  </style>
+</head>
+<body>
+  <main class="deck">
+    <section class="slide active" data-number="01">
+      <div class="kicker">Project presentation</div>
+      <h1>Intelligent Observability &amp; Event Watchdog</h1>
+      <div class="accent-line"></div>
+      <p class="subtitle">An API-first monitoring service that turns raw application logs into stored history, statistical signals, and actionable alerts.</p>
+    </section>
+
+    <section class="slide" data-number="02">
+      <div class="kicker">The problem</div>
+      <h2>Logs contain signals. Incidents need decisions.</h2>
+      <div class="grid">
+        <div class="panel"><h3>Without a watchdog</h3><ul><li>Manual review is slow during incidents.</li><li>Signals are difficult to compare over time.</li><li>Alert history is disconnected from the logs.</li></ul></div>
+        <div class="panel"><h3>With this MVP</h3><ul><li>Upload through a documented API.</li><li>Build a reusable metric history.</li><li>Detect spikes and persist the response.</li></ul></div>
+      </div>
+    </section>
+
+    <section class="slide" data-number="03">
+      <div class="kicker">Architecture</div>
+      <h2>One path from event to action.</h2>
+      <div class="panel"><p>Log file &rarr; FastAPI upload &rarr; parser &rarr; SQLite records &rarr; moving average and standard deviation &rarr; anomaly &rarr; alert &rarr; simulated webhook &rarr; Streamlit dashboard</p></div>
+      <p>Built with Python, FastAPI, SQLAlchemy, SQLite, NumPy, and Streamlit.</p>
+    </section>
+
+    <section class="slide" data-number="04">
+      <div class="kicker">Live API surface</div>
+      <h2>Swagger makes the workflow immediately usable.</h2>
+      <iframe class="live" src="http://127.0.0.1:8000/docs" title="FastAPI Swagger UI"></iframe>
+      <div class="caption">Live visual from http://127.0.0.1:8000/docs</div>
+    </section>
+
+    <section class="slide" data-number="05">
+      <div class="kicker">Detection logic</div>
+      <h2>Compare today’s observation with yesterday’s behavior.</h2>
+      <div class="formula">limit = moving_average + 2 * standard_deviation</div>
+      <div class="metric-row">
+        <div class="metric"><strong>3</strong><span>baseline average</span></div>
+        <div class="metric"><strong>10</strong><span>current errors</span></div>
+        <div class="metric"><strong>0</strong><span>standard deviation</span></div>
+        <div class="metric"><strong>critical</strong><span>classification</span></div>
+      </div>
+      <p>The current upload is evaluated against prior metric history, so the spike cannot hide inside its own baseline.</p>
+    </section>
+
+    <section class="slide" data-number="06">
+      <div class="kicker">Evidence</div>
+      <h2>The anomaly is visible and inspectable.</h2>
+      <div class="grid">
+        <div><iframe class="live small" src="http://127.0.0.1:8000/api/anomalies" title="Anomalies API"></iframe><div class="caption">Live anomaly response</div></div>
+        <div><iframe class="live small" src="http://127.0.0.1:8000/api/alerts" title="Alerts API"></iframe><div class="caption">Live alert response with simulated webhook</div></div>
+      </div>
+    </section>
+
+    <section class="slide" data-number="07">
+      <div class="kicker">Operator view</div>
+      <h2>One screen for operational context.</h2>
+      <iframe class="live" src="http://localhost:8501" title="Streamlit observability dashboard"></iframe>
+      <div class="caption">Live visual from http://localhost:8501</div>
+    </section>
+
+    <section class="slide" data-number="08">
+      <div class="kicker">MVP value</div>
+      <h2>A complete feedback loop, ready to harden.</h2>
+      <div class="grid"><div class="panel"><h3>What it proves</h3><ul><li>API ingestion</li><li>Free local persistence</li><li>Statistical anomaly detection</li><li>Traceable alert history</li></ul></div><div class="panel"><h3>Next steps</h3><ul><li>Authentication and access control</li><li>Configurable service rules</li><li>Real webhook integrations</li><li>Containerized deployment</li></ul></div></div>
+    </section>
+  </main>
+  <nav class="controls"><button id="prev" type="button">Previous</button><button id="next" type="button">Next</button></nav>
+  <script>
+    const slides = [...document.querySelectorAll('.slide')];
+    let current = 0;
+    function show(index) { current = Math.max(0, Math.min(index, slides.length - 1)); slides.forEach((slide, i) => slide.classList.toggle('active', i === current)); }
+    document.getElementById('prev').onclick = () => show(current - 1);
+    document.getElementById('next').onclick = () => show(current + 1);
+    document.addEventListener('keydown', event => { if (event.key === 'ArrowRight' || event.key === ' ') show(current + 1); if (event.key === 'ArrowLeft') show(current - 1); });
+  </script>
+</body>
+</html>
